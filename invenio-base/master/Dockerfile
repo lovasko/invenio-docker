@@ -8,11 +8,23 @@ RUN apt-get update
 # install git-core
 RUN apt-get install -y git wget
 
+# create and change into code/ directory
+RUN mkdir code
+WORKDIR code
+
 # download the invenio kickstart scripts
 RUN git clone https://github.com/tiborsimko/invenio-devscripts.git
 
 # download the invenio software
 RUN git clone --branch master https://github.com/inveniosoftware/invenio.git
+
+# tell git remote that we want all pull requests too
+WORKDIR invenio
+RUN git config --add remote.origin.fetch '+refs/pull/*/head:refs/remotes/origin/pr/*'
+
+# fetch all pull requests
+RUN git fetch origin
+WORKDIR ..
 
 # setup environment for invenio
 RUN invenio-devscripts/invenio-kickstart --yes-i-know --yes-i-really-know
