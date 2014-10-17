@@ -1,6 +1,6 @@
 # base invenio image of the master branch 
 FROM ubuntu:14.04
-MAINTAINER Daniel Lovasko
+MAINTAINER Daniel Lovasko <daniel.lovasko@cern.ch>
 
 # update the repository sources list
 RUN apt-get update
