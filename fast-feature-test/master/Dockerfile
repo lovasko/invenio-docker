@@ -13,5 +13,5 @@ RUN git fetch origin
 CMD "master"
 
 # run the tests
-ENTRYPOINT /run_tests.sh
+ENTRYPOINT ["/run_tests.sh"]
 
