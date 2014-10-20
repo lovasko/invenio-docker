@@ -7,6 +7,41 @@ function usage()
   exit 1
 }
 
+function run_tests()
+{
+  # run unit tests and fail globally upon first single failure
+  sudo -u www-data nosetests -x /opt/invenio/lib/python/invenio/*_unit_tests.py
+
+  if [[ "$?" != 0 ]]
+  then
+    if [[ "${1}" = true ]]
+    then 
+      /code/invenio-devscripts/invenio-recreate-demo-site --yes-i-know
+      run_tests false 
+    else
+      exit 3
+    fi
+  fi
+
+  # run regression tests and fail globally upon first single failure
+  sudo -u www-data nosetests -x \
+    /opt/invenio/lib/python/invenio/*_regression_tests.py
+
+  if [[ "$?" != 0 ]]
+  then
+    if [[ "${1}" = true ]]
+    then 
+      /code/invenio-devscripts/invenio-recreate-demo-site --yes-i-know
+      run_tests false 
+    else
+      exit 4
+    fi
+  fi
+
+  echo "All tests run successfully."
+  exit 0
+}
+
 # check input parameters
 if [[ "$#" != 1 || "${1}" = "-h" || "${1}" = "--help" ]]
 then
@@ -51,9 +86,9 @@ then
   git checkout "pr/${1}"
 fi
 
-# run the tests (work in progress)
-#sudo -u www-data nosetests /opt/invenio/lib/python/invenio/*_unit_tests.py
-#sudo -u www-data nosetests /opt/invenio/lib/python/invenio/*_regression_tests.py
+# install the feature branch 
+/code/invenio-devscripts/invenio-make-install
 
-exit 0
+# run the tests
+run_tests true
 
