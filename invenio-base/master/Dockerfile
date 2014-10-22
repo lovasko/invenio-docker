@@ -36,7 +36,8 @@ RUN git clone --branch master https://github.com/inveniosoftware/invenio.git
 
 # tell git remote that we want all pull requests too
 WORKDIR invenio
-RUN git config --add remote.origin.fetch '+refs/pull/*/head:refs/remotes/origin/pr/*'
+RUN git config --add remote.origin.fetch \
+  '+refs/pull/*/head:refs/remotes/origin/pr/*'
 
 # fetch all pull requests
 RUN git fetch origin
