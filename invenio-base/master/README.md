@@ -1,9 +1,9 @@
 # Invenio master base image
 Dockerized version of the Invenio software - master branch. This image
 contains Apache2, MySQL server and Redis server in the same container.
-The [official invenio repository](www.github.com/inveniosoftware/invenio) 
+The [official invenio repository](https://github.com/inveniosoftware/invenio) 
 is used as a source for the source code. Tibor Simko's
-[devscripts](www.github.com/tiborsimko/invenio-devscripts) are used to
+[devscripts](https://github.com/tiborsimko/invenio-devscripts) are used to
 setup the environment and create the testing database/website.
 
 ## Build
