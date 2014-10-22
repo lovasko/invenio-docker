@@ -50,3 +50,9 @@ EXPOSE 443
 # setup environment for invenio
 RUN invenio-devscripts/invenio-kickstart --yes-i-know --yes-i-really-know
 
+# add the service starting script
+ADD content/start_services.sh /start_services.sh
+
+# set it as an entry point
+ENTRYPOINT ["/start_services.sh"]
+
