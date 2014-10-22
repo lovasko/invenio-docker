@@ -25,6 +25,10 @@ RUN apt-get install -y git wget locate apache2
 RUN updatedb
 
 # create and change into code/ directory
+# WORKAROUND: Docker is having problems with changing working directory
+#             to `/`. Hence `invenio/` and `invenio-devscripts/` are 
+#             being manipulated in the `/code/` directory. This might 
+#             (but also might not) change in future versions.
 RUN mkdir code
 WORKDIR code
 
