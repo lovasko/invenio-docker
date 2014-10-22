@@ -2,6 +2,11 @@
 FROM ubuntu:14.04
 MAINTAINER Daniel Lovasko <daniel.lovasko@cern.ch>
 
+# set the apache2 variables
+ENV APACHE_RUN_USER www-data
+ENV APACHE_RUN_GROUP www-data
+ENV APACHE_LOG_DIR /var/log/apache2
+
 # update the repository sources list
 RUN apt-get update
 
