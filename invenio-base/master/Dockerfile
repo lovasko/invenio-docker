@@ -43,6 +43,10 @@ RUN git config --add remote.origin.fetch \
 RUN git fetch origin
 WORKDIR ..
 
+# expose HTTP and HTTPS ports
+EXPOSE 80
+EXPOSE 443
+
 # setup environment for invenio
 RUN invenio-devscripts/invenio-kickstart --yes-i-know --yes-i-really-know
 
