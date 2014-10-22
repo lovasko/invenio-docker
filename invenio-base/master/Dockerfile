@@ -11,7 +11,18 @@ ENV APACHE_LOG_DIR /var/log/apache2
 RUN apt-get update
 
 # install git-core
-RUN apt-get install -y git wget
+# WORKAROUND: Currently, invenio is checking the apache2 version by
+#             using `locate` to search the executable, followed by
+#             grep-ing out the version string. There is a faulty 
+#             assumption that the locate package is installed on
+#             every system and that `updatedb` is triggered by the
+#             package manager. We need to install both locate and 
+#             apache2 before kickstarting invenio, in order to have
+#             the apache2 binary already in the locate database.
+RUN apt-get install -y git wget locate apache2
+
+# update the locate database
+RUN updatedb
 
 # create and change into code/ directory
 RUN mkdir code
