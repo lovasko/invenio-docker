@@ -7,6 +7,11 @@ ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
 ENV APACHE_LOG_DIR /var/log/apache2
 
+# set the invenio variables
+ENV CFG_INVENIO_HOSTNAME invenio
+ENV CFG_INVENIO_SRCDIR /code/invenio
+ENV CFG_INVENIO_ADMIN user@localhost
+
 # update the repository sources list
 RUN apt-get update
 
