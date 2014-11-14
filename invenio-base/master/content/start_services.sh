@@ -3,6 +3,7 @@
 
 service mysql start
 service redis-server start
+service postfix start
 
 # default behaviour is to start apache2 in background
 if [[ ${1} = "--apache-in-foreground" ]]
