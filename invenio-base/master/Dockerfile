@@ -2,15 +2,29 @@
 FROM ubuntu:14.04
 MAINTAINER Daniel Lovasko <daniel.lovasko@cern.ch>
 
+# set the global hostname
+ENV HOSTNAME localhost 
+
 # set the apache2 variables
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
 ENV APACHE_LOG_DIR /var/log/apache2
 
 # set the invenio variables
-ENV CFG_INVENIO_HOSTNAME invenio
+ENV CFG_INVENIO_HOSTNAME localhost 
 ENV CFG_INVENIO_SRCDIR /code/invenio
-ENV CFG_INVENIO_ADMIN user@localhost
+ENV CFG_INVENIO_ADMIN admin@localhost
+
+# WORKAROUND: invenio-setup-environment checks for the presence of the
+#             CFG_INVENIO_HOSTNAME variable in the .bashrc file and
+#             adds one, when not is present. This results into using
+#             the hostname of the machine during building the image,
+#             which in turn sets the variable to an unacceptable random
+#             SHA value during the build execution.
+RUN echo "export CFG_INVENIO_HOSTNAME=localhost" >> /.bashrc
+RUN echo "export CFG_INVENIO_SRCDIR=/code/invenio" >> /.bashrc
+RUN echo "export CFG_INVENIO_ADMIN=admin@localhost" >> /.bashrc
+RUN echo "export CFG_INVENIO_DOMAINNAME=" >> /.bashrc
 
 # update the repository sources list
 RUN apt-get update
