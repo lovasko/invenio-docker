@@ -9,6 +9,6 @@ then
 fi
 
 set -x
-sudo docker run -p "${1}":80 -p "${2}":443 invenio-base:master\
-  --apache-in-foreground
+sudo docker run -p "${1}":80 -p "${2}":443 -h localhost\
+  invenio-base:master --apache-in-foreground
 
