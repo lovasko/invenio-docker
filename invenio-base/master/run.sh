@@ -1,6 +1,14 @@
 #!/bin/bash
 # run the invenio-base: master image
 
+if [[ $1 == "debug" ]]
+then
+  set -x
+  sudo docker run -h invenio -t -i --entrypoint=/bin/bash\
+    invenio-base:master -s
+  exit 0
+fi
+
 if [[ $# != 2 ]]
 then
   echo "Wrong number of arguments."
