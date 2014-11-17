@@ -7,6 +7,8 @@ function usage()
   exit 1
 }
 
+# run various test suites
+# @param 1 recreate demo-site on failure
 function run_tests()
 {
   # run unit tests and fail globally upon first single failure
@@ -24,7 +26,7 @@ function run_tests()
   fi
 
   # run regression tests and fail globally upon first single failure
-  sudo -u www-data nosetests -x \
+  sudo -u www-data nosetests \
     /opt/invenio/lib/python/invenio/*_regression_tests.py
 
   if [[ "$?" != 0 ]]
@@ -42,18 +44,20 @@ function run_tests()
   exit 0
 }
 
+# detect wrong argument count or help message
+# @param 1 parameter list
 function parse_arguments()
 {
-  # check input parameters
   if [[ "$#" != 1 || "${1}" = "-h" || "${1}" = "--help" ]]
   then
     usage
   fi
 }
 
+# determine whether the branch is a pull request or not
+# @param 1 branch name or pull request ID
 function determine_pattern()
 {
-  # determine whether the branch is a PR or not
   # assume branch
   pattern=normal
 
@@ -64,9 +68,10 @@ function determine_pattern()
   fi
 }
 
+# checkout the appropriate branch
+# @param 1 branch name or pull request ID
 function checkout_branch()
 {
-  # checkout the appropriate branch
   if [[ "${pattern}" = "normal" ]]
   then
     # test for existence
@@ -95,15 +100,16 @@ function checkout_branch()
   fi
 }
 
+# install changes made in the feature branch 
 function install_branch()
 {
-  # install the feature branch 
-  /code/invenio-devscripts/invenio-make-install
+  (cd /code/invenio && /code/invenio-devscripts/invenio-make-install)
 }
 
-parse_arguments
-determine_pattern
-checkout_branch
+parse_arguments $@
+determine_pattern $@
+checkout_branch $@
 install_branch
-run_tests true
+/start_services.sh
+run_tests false
 
