@@ -12,8 +12,9 @@ ENV APACHE_LOG_DIR /var/log/apache2
 
 # set the invenio variables
 ENV CFG_INVENIO_HOSTNAME localhost 
+ENV CFG_INVENIO_DOMAINNAME localhost
 ENV CFG_INVENIO_SRCDIR /code/invenio
-ENV CFG_INVENIO_ADMIN admin@localhost
+ENV CFG_INVENIO_ADMIN daniel.lovasko@cern.ch
 
 # WORKAROUND: invenio-setup-environment checks for the presence of the
 #             CFG_INVENIO_HOSTNAME variable in the .bashrc file and
@@ -22,9 +23,9 @@ ENV CFG_INVENIO_ADMIN admin@localhost
 #             which in turn sets the variable to an unacceptable random
 #             SHA value during the build execution.
 RUN echo "export CFG_INVENIO_HOSTNAME=localhost" >> /.bashrc
+RUN echo "export CFG_INVENIO_DOMAINNAME=localhost" >> /.bashrc
 RUN echo "export CFG_INVENIO_SRCDIR=/code/invenio" >> /.bashrc
-RUN echo "export CFG_INVENIO_ADMIN=admin@localhost" >> /.bashrc
-RUN echo "export CFG_INVENIO_DOMAINNAME=" >> /.bashrc
+RUN echo "export CFG_INVENIO_ADMIN=daniel.lovasko@cern.ch" >> /.bashrc
 
 # update the repository sources list
 RUN apt-get update
