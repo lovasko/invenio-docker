@@ -7,6 +7,11 @@ if [[ "${1}" == "debug" ]]
 then
   sudo docker run -t -i --entrypoint=/bin/bash fast-feature-test:master -s
 else
-  sudo docker run -h invenio fast-feature-test:master "$@"
+  # assure the existence of the output directory 
+  sudo mkdir -p output
+
+  # TODO get the document directory, not the cwd
+  sudo docker run -h invenio -v `pwd`/output:/output \
+    fast-feature-test:master "$@"
 fi
 
