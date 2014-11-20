@@ -7,6 +7,27 @@ function usage()
   exit 1
 }
 
+# run various tests only once while always recreating the database
+function primitive_run_tests()
+{
+  # stop apache to prevent data race
+  service apache2 stop
+
+  # recreate demo site
+  /code/invenio-devscripts/invenio-recreate-demo-site --yes-i-know
+
+  # craete almost unique file name that consists of the pull request 
+  # ID and a timestamp
+  TEST_OUTPUT="${1}-`date +%s`"
+
+  # run the both test suites
+  sudo -u www-data nosetests --with-xunit --xunit-file=/output/"$TEST_OUTPUT" \
+    /opt/invenio/lib/python/invenio/*_unit_tests.py \
+    /opt/invenio/lib/python/invenio/*_regression_tests.py
+
+  RESULT=$?
+}
+
 # run various test suites
 # @param 1 recreate demo-site on failure
 function run_tests()
@@ -106,10 +127,15 @@ function install_branch()
   (cd /code/invenio && /code/invenio-devscripts/invenio-make-install)
 }
 
+# enable access to the output directory
+chmod 777 /output
+
 parse_arguments $@
 determine_pattern $@
 checkout_branch $@
 install_branch
 /start_services.sh
-run_tests false
+# run_tests false
+primitive_run_tests $@
 
+exit "${RESULT}"
