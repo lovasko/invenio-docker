@@ -14,7 +14,7 @@ ENV APACHE_LOG_DIR /var/log/apache2
 ENV CFG_INVENIO_HOSTNAME localhost 
 ENV CFG_INVENIO_DOMAINNAME localhost
 ENV CFG_INVENIO_SRCDIR /code/invenio
-ENV CFG_INVENIO_ADMIN daniel.lovasko@cern.ch
+ENV CFG_INVENIO_ADMIN root@localhost
 
 # WORKAROUND: invenio-setup-environment checks for the presence of the
 #             CFG_INVENIO_HOSTNAME variable in the .bashrc file and
@@ -25,7 +25,7 @@ ENV CFG_INVENIO_ADMIN daniel.lovasko@cern.ch
 RUN echo "export CFG_INVENIO_HOSTNAME=localhost" >> /.bashrc
 RUN echo "export CFG_INVENIO_DOMAINNAME=localhost" >> /.bashrc
 RUN echo "export CFG_INVENIO_SRCDIR=/code/invenio" >> /.bashrc
-RUN echo "export CFG_INVENIO_ADMIN=daniel.lovasko@cern.ch" >> /.bashrc
+RUN echo "export CFG_INVENIO_ADMIN=root@localhost" >> /.bashrc
 
 # update the repository sources list
 RUN apt-get update
